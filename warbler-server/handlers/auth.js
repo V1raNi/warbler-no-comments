@@ -57,6 +57,10 @@ exports.signup = async function(req, res, next) {
     if (err.code === 11000) {
       err.message = 'Sorry, that username and/or email is already taken';
     }
+    if (err.errors) {
+      const errKeys = Object.keys(err.errors);
+      err.message = `Please fill in the required fields: ${errKeys.join(', ')}`;
+    }
     return next({
       status: 400,
       message: err.message
